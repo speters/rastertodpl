@@ -30,9 +30,10 @@
  * Include necessary headers...
  */
 
+/*
 #include <cups/cups.h>
-#include <cups/string-private.h>
-#include <cups/language-private.h>
+//#include <cups/string-private.h>
+//#include <cups/language-private.h>
 #include <cups/raster.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,7 +41,21 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <errno.h>
+*/
 
+#define _(x) x
+
+#include <cups/cups.h>
+#include <cups/ppd.h>
+#include <cups/raster.h>
+#include <cups/i18n.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <math.h>
+
+#include <errno.h>
 /*
  * This driver filter currently supports Datamax I Series label printers.
  *
@@ -176,11 +191,11 @@ Setup(ppd_file_t *ppd)			/* I - PPD file */
     default :
     
 				/*
-        * Start PCX graphics send <SOH>D then <STX>IDP<CR>
+        * Start PCX graphics send <SOH>D then <STX>ICP<CR>
 				* We must flip the image in the Datamax since it would print mirror otherwise.
 				*/
 				
-				printf("%cD%cIDPCups%c",SOH,STX,CR);
+				printf("%cD%cICPCups%c",SOH,STX,CR);
   }
 }
 
@@ -327,9 +342,9 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   max_page_length = (header->PageSize[1] / 72 * 300) >= 500 ? (header->PageSize[1] / 72 * 300) : 500;
   printf("%cM%04d", STX, max_page_length);
 
-  if ((choice = ppdFindMarkedChoice(ppd, "DPLSensor")) != NULL)
+  if ((choice = ppdFindMarkedChoice(ppd, "MediaClass")) != NULL)
   {
-		if (strcmp("Gap", choice->choice) == 0)
+		if (strcmp("LablesEdge", choice->choice) == 0)
 		{
 			printf("%cc0000", STX);		/* Set Length to Zero */
 			printf("%ce", STX);		/* Turn on Edge Detection */
@@ -340,7 +355,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 			printf("%cc%04d", STX, header->PageSize[1]); /* Set Length */
 		}
 
-		if (strcmp("Reflective", choice->choice) == 0)
+		if (strcmp("LablesMark", choice->choice) == 0)
 		{
 			printf("%cc0000", STX);		/* Set Length to Zero */
 			printf("%cr", STX);		/* Turn on Reflective */
@@ -350,10 +365,10 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   /*
    * Set Present Distance
    */
-
+/*
   if ((choice = ppdFindMarkedChoice(ppd, "DPLPresentDistance")) != NULL)
 		printf("%cKf%04d%c", STX, atoi(choice->choice), CR);
-
+*/
   /*
    * Start label...
    */
@@ -376,14 +391,15 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   /*
    * Set Heat setting
    */
-   
-  if ((choice = ppdFindMarkedChoice(ppd, "DPLHeat")) != NULL)
+   printf("H%02d%c", header->cupsCompression ,CR);
+/*
+  if ((choice = ppdFindMarkedChoice(ppd, "Darkness")) != NULL)
 		printf("H%02d%c", atoi(choice->choice),CR);
-
+*/
   /*
    * Set print Speed
    */
-   
+  
   if ((choice = ppdFindMarkedChoice(ppd, "DPLPrintSpeed")) != NULL)
 		printf("P%c%c", val[atoi(choice->choice)],CR);
 
@@ -418,11 +434,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   /*
    * Set Quantity
    */
-   
-  if ((choice = ppdFindMarkedChoice(ppd, "Copies")) != NULL)
-    printf("Q%04d%c", atoi(choice->choice),CR);
-  else
-    printf("Q%04d%c", 1, CR);
+   printf("Q%04d%c", header->NumCopies, CR);
 
   /*
    * Display the label image... maybe we have to spec row and column here?
@@ -446,8 +458,8 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 
     default :
 				/* All others can use Module D */
-				printf("%cxDGCups%c",STX,CR);	/* Clear memory file if there is one*/
-				printf("%czD",STX);		/* Reclaim the memory from module */
+				printf("%cxCGCups%c",STX,CR);	/* Clear memory file if there is one*/
+				printf("%czC",STX);		/* Reclaim the memory from module */
   }
 
   fflush(stdout);
