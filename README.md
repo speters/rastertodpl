@@ -1,4 +1,4 @@
-#rastertodpl CUPS filter for DataMax and Citizen CPL label printers
+# rastertodpl CUPS filter for DataMax and Citizen CPL label printers
 
 This is an effort to recreate the `rastertodpl` CUPS filter for DataMax DPL and Citizen CPL label printers.
 
@@ -23,3 +23,7 @@ Luckily the driver part `rastertodpl.c` could still be found on the net, so I ju
 I changed the printer's image storage space to `C` which is the printer's default location.
 
 The ppd options have also been renamed, as I was trying to get rid of printer-specific options - they are still not settled and might change.
+
+## See also
+
+[Citizen CLP Command Reference](https://www.citizen-systems.com/resource/support/Label/CL-S521/Official_Docs/Label_Printer_CL-S_Command_Reference_ENG.pdf)
