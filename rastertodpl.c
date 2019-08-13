@@ -133,6 +133,7 @@ void pcx_encode
 #define SOH 1
 #define STX 2
 #define CR 13
+#define ESC 27
 
 /*
  * Globals...
@@ -341,6 +342,9 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   /* Set the Maximum Page Length for Page Out errors to 3 times actual */
   max_page_length = (header->PageSize[1] / 72 * 300) >= 500 ? (header->PageSize[1] / 72 * 300) : 500;
   printf("%cM%04d", STX, max_page_length);
+
+  /* Setting ejection / tear off */
+  printf("%c%ct1", STX, ESC);
 
   if ((choice = ppdFindMarkedChoice(ppd, "MediaClass")) != NULL)
   {
