@@ -343,8 +343,18 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   max_page_length = (header->PageSize[1] / 72 * 300) >= 500 ? (header->PageSize[1] / 72 * 300) : 500;
   printf("%cM%04d", STX, max_page_length);
 
-  /* Setting ejection / tear off */
-  printf("%c%ct1", STX, ESC);
+  if ((int)header->AdvanceDistance > 0)
+  {
+    /* Setting ejection / tear off */
+    printf("%c%ct1", STX, ESC);
+
+    if ((int)header->AdvanceDistance >= 1000)
+    {
+      printf("%cKf%04d", STX, (int)header->AdvanceDistance);
+    } else {
+      printf("%cf%03d", STX, (int)header->AdvanceDistance;
+    }
+  }
 
   if ((choice = ppdFindMarkedChoice(ppd, "MediaClass")) != NULL)
   {
@@ -380,7 +390,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   printf("%cL%c",STX,CR);
 
   /*
-   * Set Imperial Mode - everything is in inches
+   * Set Metric Mode
    */
    
   printf("m%c",CR);
