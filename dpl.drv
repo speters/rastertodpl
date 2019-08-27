@@ -23,6 +23,8 @@ MinSize 11.24mm 12.7mm
 MaxSize 104mm 2539mm
 VariablePaperSize Yes
 
+// Peel off / eject position  0..1118  1/10mm
+Attribute AdvanceDistance "" 1118
 
 // Supported page sizes
 #media "25x53mm.Fullbleed/small Label - 25mm*53mm" 25mm 53mm

@@ -352,7 +352,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
     {
       printf("%cKf%04d", STX, (int)header->AdvanceDistance);
     } else {
-      printf("%cf%03d", STX, (int)header->AdvanceDistance;
+      printf("%cf%03d", STX, (int)header->AdvanceDistance);
     }
   }
 
