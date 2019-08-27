@@ -24,7 +24,7 @@ MaxSize 104mm 2539mm
 VariablePaperSize Yes
 
 // Peel off / eject position  0..1118  1/10mm ; -1:off
-#define PEEL_DIST 22
+#define PEEL_DIST 1118
 
 #define MAX_PEEL_DIST 1118
 #if ( PEEL_DIST < 0 )
