@@ -25,17 +25,7 @@ VariablePaperSize Yes
 
 // Peel off / eject position  0..1118  1/10mm ; -1:off
 #define PEEL_DIST 1118
-
 #define MAX_PEEL_DIST 1118
-#if ( PEEL_DIST < 0 )
-Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance -1>>setpagedevice"
-#else
-  #if ( PEEL_DIST <= MAX_PEEL_DIST )
-Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance $PEEL_DIST>>setpagedevice"
-  #else
-Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
-  #endif
-#endif
 
 // Supported page sizes
 #media "25x53mm.Fullbleed/small Label - 25mm*53mm" 25mm 53mm
@@ -94,3 +84,17 @@ Group "PrinterSettings/Printer Settings"
 	Choice "28/28" "<</cupsCompression 28>>setpagedevice"
 	Choice "29/29" "<</cupsCompression 29>>setpagedevice"
 	Choice "30/30" "<</cupsCompression 30>>setpagedevice"
+
+    Option "dplPeelingPosition/Peeling (Cutting) Position Adjust" PickOne DocumentSetup 10
+#if ( PEEL_DIST < 0 )
+	*Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
+#else
+  #if ( PEEL_DIST < MAX_PEEL_DIST )
+	Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
+	*Choice "$PEEL_DIST" "<</AdvanceDistance $PEEL_DIST>>setpagedevice"
+	Choice "$MAX_PEEL_DIST/max" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
+  #else
+	Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
+	*Choice "$MAX_PEEL_DIST/max" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
+  #endif
+#endif
