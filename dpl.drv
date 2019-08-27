@@ -23,8 +23,19 @@ MinSize 11.24mm 12.7mm
 MaxSize 104mm 2539mm
 VariablePaperSize Yes
 
-// Peel off / eject position  0..1118  1/10mm
-Attribute AdvanceDistance "" 1118
+// Peel off / eject position  0..1118  1/10mm ; -1:off
+#define PEEL_DIST 22
+
+#define MAX_PEEL_DIST 1118
+#if ( PEEL_DIST < 0 )
+Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance -1>>setpagedevice"
+#else
+  #if ( PEEL_DIST <= MAX_PEEL_DIST )
+Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance $PEEL_DIST>>setpagedevice"
+  #else
+Attribute AdvanceDistance "Peeling (Cutting) Position" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
+  #endif
+#endif
 
 // Supported page sizes
 #media "25x53mm.Fullbleed/small Label - 25mm*53mm" 25mm 53mm

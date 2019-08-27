@@ -173,6 +173,9 @@ Setup(ppd_file_t *ppd)			/* I - PPD file */
 
   fprintf(stderr,"ModelNumber is %d\n",ModelNumber);
 
+  /* Command reset */
+//  printf("%c#",SOH);
+
  /*
   * Initialize based on the model number...
   */
@@ -343,7 +346,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
   max_page_length = (header->PageSize[1] / 72 * 300) >= 500 ? (header->PageSize[1] / 72 * 300) : 500;
   printf("%cM%04d", STX, max_page_length);
 
-  if ((int)header->AdvanceDistance > 0)
+  if ((int)header->AdvanceDistance >= 0)
   {
     /* Setting ejection / tear off */
     printf("%c%ct1", STX, ESC);
