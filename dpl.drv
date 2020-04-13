@@ -89,10 +89,20 @@ Group "PrinterSettings/Printer Settings"
 #if ( PEEL_DIST < 0 )
 	*Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
 #else
-  #if ( PEEL_DIST < MAX_PEEL_DIST )
+  #if ( PEEL_DIST <= MAX_PEEL_DIST )
 	Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
-	*Choice "$PEEL_DIST" "<</AdvanceDistance $PEEL_DIST>>setpagedevice"
-	Choice "$MAX_PEEL_DIST/max" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
+	*Choice "  0mm" "<</AdvanceDistance 0>>setpagedevice"
+	Choice " 10mm" "<</AdvanceDistance 100>>setpagedevice"
+	Choice " 20mm" "<</AdvanceDistance 200>>setpagedevice"
+	Choice " 30mm" "<</AdvanceDistance 300>>setpagedevice"
+	Choice " 40mm" "<</AdvanceDistance 400>>setpagedevice"
+	Choice " 50mm" "<</AdvanceDistance 500>>setpagedevice"
+	Choice " 60mm" "<</AdvanceDistance 600>>setpagedevice"
+	Choice " 70mm" "<</AdvanceDistance 700>>setpagedevice"
+	Choice " 80mm" "<</AdvanceDistance 800>>setpagedevice"
+	Choice " 90mm" "<</AdvanceDistance 900>>setpagedevice"
+	Choice "100mm" "<</AdvanceDistance 1000>>setpagedevice"
+	Choice "$MAX_PEEL_DIST/10mm (max)" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
   #else
 	Choice "unset" "<</AdvanceDistance -1>>setpagedevice"
 	*Choice "$MAX_PEEL_DIST/max" "<</AdvanceDistance $MAX_PEEL_DIST>>setpagedevice"
