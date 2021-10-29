@@ -341,8 +341,8 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 
   printf("%c",CR); 			/* Terminate the pcx download */
 
-  /* Set the Maximum Page Length for Page Out errors to 3 times actual */
-  max_page_length = (header->PageSize[1] / 72 * 300) >= 500 ? (header->PageSize[1] / 72 * 300) : 500;
+  /* Set the Maximum Page Length for Page Out errors to 3 times actual - comes in points and we want 0.1millimeters */
+  max_page_length = (header->PageSize[1] / 72 * 3 * 254) >= 500 ? (header->PageSize[1] / 72 * 3 * 254) : 500;
   printf("%cM%04d", STX, max_page_length);
 
   if ((int)header->AdvanceDistance >= 0)
@@ -368,7 +368,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 
 		if (strcmp("Continuous", choice->choice) == 0)
 		{
-			printf("%cc%04d", STX, header->PageSize[1]); /* Set Length */
+			printf("%cc%04d", STX, header->PageSize[1] / 72 * 254); /* Set Length  - comes in points and we want 0.1millimeters*/
 		}
 
 		if (strcmp("LablesMark", choice->choice) == 0)
