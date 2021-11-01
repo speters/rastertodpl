@@ -26,4 +26,4 @@ The ppd options have also been renamed, as I was trying to get rid of printer-sp
 
 ## See also
 
-[Citizen CLP Command Reference](https://www.citizen-systems.com/resource/support/Label/CL-S521/Official_Docs/Label_Printer_CL-S_Command_Reference_ENG.pdf)
+[Citizen CLP Command Reference](http://web.archive.org/web/20181204185823/https://www.citizen-systems.com/resource/support/Label/CL-S521/Official_Docs/Label_Printer_CL-S_Command_Reference_ENG.pdf)
