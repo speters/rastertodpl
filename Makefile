@@ -7,7 +7,7 @@ CUPSDATADIR = $(shell cups-config --datadir)
 PPDPATH=${CUPSDATADIR}/model
 CUPSDIR = $(shell cups-config --serverbin)
 
-all: rastertodpl ppd
+all: $(EXEC) ppd
 
 .PHONY: ppd clean install uninstall
 
@@ -29,5 +29,5 @@ uninstall:
 
 
 clean:
-	rm -f rastertodpl
+	rm -f $(EXEC)
 	rm -rf ppd
